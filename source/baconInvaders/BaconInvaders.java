@@ -21,7 +21,8 @@ public class BaconInvaders {
             }
             if (choice.toUpperCase().equals("KITCHEN")) {
             	
-            	invaders = generateEnemies();
+            	int maxEnemies = 4;
+            	invaders = generateEnemies(maxEnemies);
                 choice = KitchenRoom(in, player1, invaders);
             }
         }
@@ -29,12 +30,10 @@ public class BaconInvaders {
     }
     
     	//Method to populate enemy arrayList 
-    	//needs to be reusable, 
-    		//possibly better to pass value for max number of enemies in room for control
-    	//Does this belong in the enemy class?
-	    private static ArrayList<Enemy> generateEnemies() {
+    	//needs to be reusable    	   	
+	    private static ArrayList<Enemy> generateEnemies(int max) {
 	    	Random rand = new Random();
-	    	int count = rand.nextInt(4) + 1;//initialize random enemy generation
+	    	int count = rand.nextInt(max) + 2;//initialize random enemy generation
 	    	
 	    	ArrayList<Enemy> enemies = new ArrayList<Enemy>();
 	    	for(int i = 0; i < count; i++)
@@ -122,9 +121,14 @@ public class BaconInvaders {
         		fightScenes(one, them.get(i));
         		if(one.getHealthBar()==0)
         		{
-        			i = (them.size()-1);
+        			//i = (them.size()-1);
+        			break;
         		}
         	}
+        	//better handling
+        	//int enemiesInRoom = them.size();
+        	
+        	
         	
         }
 
@@ -140,7 +144,7 @@ public class BaconInvaders {
             System.out.println("You are ready to Fight");
 
             //Handle Fight Mechanics
-            while(one.getHealthBar() > 0 && two.getHealthBar() > 0 && userInput!= 2)
+            while(one.getHealthBar() > 0 && two.getHealthBar() > 0 && userInput !=2)
             {
                 System.out.println("*********************************************************");
                 System.out.println("Your Health: " + one.getHealthBar());
@@ -172,7 +176,16 @@ public class BaconInvaders {
                 gameOver();
 
             }            
-            in.close();
+            if(two.getHealthBar()<=0)
+            {
+            	System.out.println("\nHAHA, HOHO, You beat it.");
+            	System.out.println("Now time to canabalize this giant meat patty.\n" +
+            						"You open your mouth as wide as you can and bite deep,\n" +
+            						"receiving a delicious perfect burger bite.");
+            	int regain = rand.nextInt(25)+1;            	
+            	System.out.println("You receive " + regain + " health points!\n");
+            	one.setTheHealth((one.getHealthBar() + regain));
+            }
 
         }
         
